@@ -178,9 +178,10 @@ const ScrollExpandMedia = ({
       ref={sectionRef}
       id={sectionId}
       className='transition-colors duration-700 ease-in-out overflow-x-hidden w-full relative'
+      style={{ touchAction: 'pan-y' }}
     >
       <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
-        <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
+        <div className={`relative w-full flex flex-col items-center min-h-[100dvh] ${mediaFullyExpanded ? 'pointer-events-none' : ''}`}>
           <motion.div
             className='absolute inset-0 z-0 h-full'
             initial={{ opacity: 0 }}
@@ -287,7 +288,7 @@ const ScrollExpandMedia = ({
                   </div>
                 )}
 
-                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
+                <div className={`flex flex-col items-center text-center relative z-10 mt-4 transition-none ${mediaFullyExpanded ? 'pointer-events-none' : ''}`}>
                   {date && (
                     <p
                       className='text-2xl text-blue-200'
@@ -314,7 +315,7 @@ const ScrollExpandMedia = ({
               </div>
 
               <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
+                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${mediaFullyExpanded ? 'pointer-events-none' : ''} ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                   }`}
               >
                 <motion.h2
