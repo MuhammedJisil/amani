@@ -113,6 +113,9 @@ const ScrollExpandMedia = ({
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
+      // If fully expanded and swiping up (scrolling down), let native scroll take over
+      if (mediaFullyExpanded && deltaY > 0) return;
+
       if (mediaFullyExpanded && deltaY < -20) {
         setMediaFullyExpanded(false);
         e.preventDefault();
@@ -178,10 +181,10 @@ const ScrollExpandMedia = ({
       ref={sectionRef}
       id={sectionId}
       className='transition-colors duration-700 ease-in-out overflow-x-hidden w-full relative'
-      style={{ touchAction: 'pan-y' }}
+      style={{ touchAction: (scrollProgress > 0 && scrollProgress < 1) ? 'none' : 'auto' }}
     >
       <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
-        <div className={`relative w-full flex flex-col items-center min-h-[100dvh] ${mediaFullyExpanded ? 'pointer-events-none' : ''}`}>
+        <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
           <motion.div
             className='absolute inset-0 z-0 h-full'
             initial={{ opacity: 0 }}
@@ -202,7 +205,7 @@ const ScrollExpandMedia = ({
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
             <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
               <div
-                className={`absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl ${mediaFullyExpanded ? 'pointer-events-none' : ''}`}
+                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
@@ -288,7 +291,7 @@ const ScrollExpandMedia = ({
                   </div>
                 )}
 
-                <div className={`flex flex-col items-center text-center relative z-10 mt-4 transition-none ${mediaFullyExpanded ? 'pointer-events-none' : ''}`}>
+                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
                   {date && (
                     <p
                       className='text-2xl text-blue-200'
@@ -315,7 +318,7 @@ const ScrollExpandMedia = ({
               </div>
 
               <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${mediaFullyExpanded ? 'pointer-events-none' : ''} ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
+                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
                   }`}
               >
                 <motion.h2
