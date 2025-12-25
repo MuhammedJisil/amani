@@ -16,8 +16,8 @@ const StyledWrapper = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100vh;
+    width: 100vw;
+    height: 100dvh;
     background-color: #000;
     display: flex;
     justify-content: center;
@@ -32,6 +32,7 @@ const StyledWrapper = styled.div`
     line-height: 1.2;
     color: #fff;
     letter-spacing: 5px;
+    margin-right: -5px; /* Compels true centering despite letter-spacing */
     z-index: 1;
     animation: shift 1s ease-in-out infinite alternate;
   }

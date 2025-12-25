@@ -61,39 +61,39 @@ export default function ContactPage() {
         ref={sectionRef}
         className="relative min-h-screen flex items-center justify-center p-8 pb-24"
       >
-        <motion.div 
+        <motion.div
           style={{ opacity, y }}
           className="relative z-10 max-w-3xl mx-auto w-full"
         >
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             viewport={{ once: true, amount: 0.3 }}
-            className="text-4xl font-bold text-red-500 mb-3 text-center" 
+            className="text-4xl font-bold text-red-500 mb-3 text-center"
             style={{ fontFamily: "'Anton', sans-serif" }}
           >
             Get In Touch
           </motion.h2>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true, amount: 0.3 }}
-            className="text-lg text-gray-400 text-center mb-6 max-w-xl mx-auto" 
+            className="text-lg text-gray-400 text-center mb-6 max-w-xl mx-auto"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Ready to bring the energy to your event? Contact us or book a show today.
           </motion.p>
 
           {/* Inquiry Details */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true, amount: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-6 mb-8" 
+            className="flex flex-wrap items-center justify-center gap-6 mb-8"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             <a
@@ -115,7 +115,7 @@ export default function ContactPage() {
           </motion.div>
 
           {/* Book a Show Card */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -225,11 +225,11 @@ export default function ContactPage() {
       <footer className="relative bg-transparent border-t border-red-900/10 py-6 z-10">
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <div className="text-gray-400 text-sm">
-            © Copyright AMANI KL10 {new Date().getFullYear()} All rights reserved.
+            <div className="text-gray-400 text-sm text-center md:text-left">
+              © Copyright AMANI KL10 {new Date().getFullYear()} All rights reserved.
             </div>
 
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
+            <div className="flex items-center justify-center md:justify-end gap-2 text-gray-400 text-sm w-full md:w-auto">
               <span>Powered by</span>
               <img
                 src="/SynByte.png"
