@@ -22,18 +22,6 @@ const ScrollExpandMedia = ({
   const [isUserInteracting, setIsUserInteracting] = useState(false);
 
   const sectionRef = useRef(null);
-  const scrollProgressRef = useRef(0);
-  const mediaFullyExpandedRef = useRef(false);
-  const isInViewRef = useRef(true);
-  const isUserInteractingRef = useRef(false);
-  const touchStartYRef = useRef(0);
-
-  // Sync refs with state
-  useEffect(() => { scrollProgressRef.current = scrollProgress; }, [scrollProgress]);
-  useEffect(() => { mediaFullyExpandedRef.current = mediaFullyExpanded; }, [mediaFullyExpanded]);
-  useEffect(() => { isInViewRef.current = isInView; }, [isInView]);
-  useEffect(() => { isUserInteractingRef.current = isUserInteracting; }, [isUserInteracting]);
-  useEffect(() => { touchStartYRef.current = touchStartY; }, [touchStartY]);
 
   useEffect(() => {
     setScrollProgress(0);
@@ -55,7 +43,7 @@ const ScrollExpandMedia = ({
   // Reset animation when navigating back to top (for menu navigation)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY === 0 && mediaFullyExpandedRef.current && !isUserInteractingRef.current) {
+      if (window.scrollY === 0 && mediaFullyExpanded && !isUserInteracting) {
         setScrollProgress(0);
         setMediaFullyExpanded(false);
         setShowContent(false);
@@ -64,7 +52,7 @@ const ScrollExpandMedia = ({
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Stable listener
+  }, [mediaFullyExpanded, isUserInteracting]);
 
   // Check if section is in view
   useEffect(() => {
@@ -85,21 +73,21 @@ const ScrollExpandMedia = ({
   useEffect(() => {
     const handleWheel = (e) => {
       // Only handle wheel events if section is in view and at the very top of the page
-      if (!isInViewRef.current || window.scrollY > 2) return;
+      if (!isInView || window.scrollY > 2) return;
 
       setIsUserInteracting(true);
 
-      if (mediaFullyExpandedRef.current && e.deltaY < 0) {
+      if (mediaFullyExpanded && e.deltaY < 0) {
         setMediaFullyExpanded(false);
         e.preventDefault();
-      } else if (!mediaFullyExpandedRef.current) {
+      } else if (!mediaFullyExpanded) {
         e.preventDefault();
+        // CHANGED: Reduced from 0.0009 to 0.0004 for slower scroll speed
         const scrollDelta = e.deltaY * 0.0004;
         const newProgress = Math.min(
-          Math.max(scrollProgressRef.current + scrollDelta, 0),
+          Math.max(scrollProgress + scrollDelta, 0),
           1
         );
-
         setScrollProgress(newProgress);
 
         if (newProgress >= 1) {
@@ -114,32 +102,29 @@ const ScrollExpandMedia = ({
     };
 
     const handleTouchStart = (e) => {
-      if (!isInViewRef.current || window.scrollY > 2) return;
+      if (!isInView || window.scrollY > 2) return;
       setTouchStartY(e.touches[0].clientY);
       setIsUserInteracting(true);
     };
 
     const handleTouchMove = (e) => {
-      if (!isInViewRef.current || !touchStartYRef.current || window.scrollY > 2) return;
+      if (!isInView || !touchStartY || window.scrollY > 2) return;
 
       const touchY = e.touches[0].clientY;
-      const deltaY = touchStartYRef.current - touchY;
+      const deltaY = touchStartY - touchY;
 
-      // MOMENTUM FIX: If fully expanded and swiping up (scrolling down), let native scroll take over
-      if (mediaFullyExpandedRef.current && deltaY > 0) return;
-
-      if (mediaFullyExpandedRef.current && deltaY < -20) {
+      if (mediaFullyExpanded && deltaY < -20) {
         setMediaFullyExpanded(false);
         e.preventDefault();
-      } else if (!mediaFullyExpandedRef.current) {
+      } else if (!mediaFullyExpanded) {
         e.preventDefault();
+        // CHANGED: Reduced touch scroll speed for smoother experience
         const scrollFactor = deltaY < 0 ? 0.008 : 0.006;
         const scrollDelta = deltaY * scrollFactor;
         const newProgress = Math.min(
-          Math.max(scrollProgressRef.current + scrollDelta, 0),
+          Math.max(scrollProgress + scrollDelta, 0),
           1
         );
-
         setScrollProgress(newProgress);
 
         if (newProgress >= 1) {
@@ -160,7 +145,7 @@ const ScrollExpandMedia = ({
 
     const handleScroll = () => {
       // Only lock scroll if actively interacting, not fully expanded, in view, and at top
-      if (isUserInteractingRef.current && !mediaFullyExpandedRef.current && isInViewRef.current && window.scrollY < 2) {
+      if (isUserInteracting && !mediaFullyExpanded && isInView && window.scrollY < 2) {
         window.scrollTo(0, 0);
       }
     };
@@ -178,9 +163,9 @@ const ScrollExpandMedia = ({
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, []); // Listeners are now added only ONCE on mount
+  }, [scrollProgress, mediaFullyExpanded, touchStartY, isInView, isUserInteracting]);
 
-  const mediaWidth = 300 + scrollProgress * (isMobileState ? 900 : 1250);
+  const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
   const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);
   // REDUCED: Changed from 180 to 120 for mobile to prevent overflow
   const textTranslateX = scrollProgress * (isMobileState ? 120 : 150);
@@ -193,7 +178,6 @@ const ScrollExpandMedia = ({
       ref={sectionRef}
       id={sectionId}
       className='transition-colors duration-700 ease-in-out overflow-x-hidden w-full relative'
-      style={{ touchAction: (scrollProgress > 0 && scrollProgress < 1) ? 'none' : 'auto' }}
     >
       <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
         <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
@@ -221,7 +205,7 @@ const ScrollExpandMedia = ({
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
-                  maxWidth: isMobileState ? '100vw' : '95vw',
+                  maxWidth: '95vw',
                   maxHeight: '85vh',
                   boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
                 }}
