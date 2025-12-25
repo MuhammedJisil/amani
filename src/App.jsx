@@ -7,7 +7,7 @@ import BottomNav from './components/BottomNav.jsx';
 import ReleasesSection from './components/ReleasesSection.jsx';
 import ContactPage from './components/ContactPage.jsx';
 import Loader from './components/Loader.jsx';
-import './App.css';
+// Styles are handled by index.css
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -24,34 +24,34 @@ function App() {
 
   // Handle asset loading
   useEffect(() => {
-  const imagesToLoad = [
-    '/aattam.png',
-    '/ab1.jpg',
-    '/ab2.jpg',
-    '/ab3.jpg',
-    '/ab4.jpg',
-    '/ab5.jpg',
-    '/ab6.jpg',
-    '/ab7.jpg',
-    '/amazon_music.png',
-    '/background1.jpg',
-    '/bg.jpg',
-    '/chathi.png',
-    '/fucknahidenge.png',
-    '/hero-image.jpg',
-    '/hero-image0.jpg',
-    '/jjj.png',
-    '/jio.png',
-    '/kochikku_parakk.png',
-    '/logo.png',
-    '/maranno.png',
-    '/paisa.png',
-    '/pirakiladi.png',
-    '/starterpack.png',
-    '/SynByte.png',
-    '/thirichariv.png',
-    '/vesenam.png',
-  ];
+    const imagesToLoad = [
+      '/aattam.png',
+      '/ab1.jpg',
+      '/ab2.jpg',
+      '/ab3.jpg',
+      '/ab4.jpg',
+      '/ab5.jpg',
+      '/ab6.jpg',
+      '/ab7.jpg',
+      '/amazon_music.png',
+      '/background1.jpg',
+      '/bg.jpg',
+      '/chathi.png',
+      '/fucknahidenge.png',
+      '/hero-image.jpg',
+      '/hero-image0.jpg',
+      '/jjj.png',
+      '/jio.png',
+      '/kochikku_parakk.png',
+      '/logo.png',
+      '/maranno.png',
+      '/paisa.png',
+      '/pirakiladi.png',
+      '/starterpack.png',
+      '/SynByte.png',
+      '/thirichariv.png',
+      '/vesenam.png',
+    ];
 
     let loadedCount = 0;
     const totalAssets = imagesToLoad.length;
