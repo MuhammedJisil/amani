@@ -4,3 +4,8 @@
 .font-anton {
     font-family: 'Anton', sans-serif;
 }
+
+body {
+    background-color: #000;
+    overscroll-behavior-y: none; /* Optional: prevents bounce effect for cooler feel, or just use color */
+}

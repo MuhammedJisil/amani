@@ -77,8 +77,8 @@ const ScrollExpandMedia = ({
 
   useEffect(() => {
     const handleWheel = (e) => {
-      // Only handle wheel events if section is in view and at the very top of the page
-      if (!isInViewRef.current || window.scrollY > 2) return;
+      // Only handle wheel events if section is in view and close to top
+      if (!isInViewRef.current || window.scrollY > 10) return;
 
       setIsUserInteracting(true);
       isUserInteractingRef.current = true;
@@ -119,7 +119,14 @@ const ScrollExpandMedia = ({
     };
 
     const handleTouchStart = (e) => {
-      if (!isInViewRef.current || window.scrollY > 2) return;
+      if (!isInViewRef.current || window.scrollY > 10) return;
+
+      // Important: if we are at the top and not expanded, we MUST claim the touch 
+      // to prevent the browser from starting a native scroll.
+      if (!mediaFullyExpandedRef.current && scrollProgressRef.current < 1) {
+        // We don't prevent default here yet, but the event structure is ready
+      }
+
       setTouchStartY(e.touches[0].clientY);
       touchStartYRef.current = e.touches[0].clientY;
       setIsUserInteracting(true);
@@ -127,7 +134,7 @@ const ScrollExpandMedia = ({
     };
 
     const handleTouchMove = (e) => {
-      if (!isInViewRef.current || !touchStartYRef.current || window.scrollY > 2) return;
+      if (!isInViewRef.current || !touchStartYRef.current || window.scrollY > 10) return;
 
       const touchY = e.touches[0].clientY;
       const startY = touchStartYRef.current;
@@ -178,7 +185,7 @@ const ScrollExpandMedia = ({
 
     const handleScroll = () => {
       // Only lock scroll if actively interacting, not fully expanded, in view, and at top
-      if (isUserInteractingRef.current && !mediaFullyExpandedRef.current && isInViewRef.current && window.scrollY < 2) {
+      if (isUserInteractingRef.current && !mediaFullyExpandedRef.current && isInViewRef.current && window.scrollY < 10) {
         window.scrollTo(0, 0);
       }
     };

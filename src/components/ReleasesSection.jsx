@@ -113,7 +113,7 @@ const ReleasesCarousel = ({ releases }) => {
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
@@ -160,7 +160,7 @@ const ReleasesCarousel = ({ releases }) => {
 
   return (
     <div
-      className="relative w-full h-[300px] flex items-center justify-center select-none"
+      className="relative w-full h-[300px] flex items-center justify-center select-none touch-pan-y"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
       onTouchStart={onTouchStart}
@@ -187,9 +187,8 @@ const ReleasesCarousel = ({ releases }) => {
               setIsUserInteracting(true);
               setCurrentIndex(index);
             }}
-            className={`w-2 h-2 rounded-full transition-all ${
-              index === currentIndex ? 'bg-red-500 w-6' : 'bg-gray-600'
-            }`}
+            className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-red-500 w-6' : 'bg-gray-600'
+              }`}
           />
         ))}
       </div>
