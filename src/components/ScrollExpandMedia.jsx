@@ -65,7 +65,7 @@ const ScrollExpandMedia = ({
       ref={containerRef}
       id={sectionId}
       className='relative w-full'
-      style={{ height: '350vh' }} // Increased from 200vh to 350vh for slower animation flow
+      style={{ height: isMobileState ? '200vh' : '350vh' }} // Mobile: faster (200vh), Desktop: slower/smoother (350vh)
     >
       {/* Sticky Inner Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
