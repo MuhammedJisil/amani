@@ -73,43 +73,83 @@ const ReleaseCard = ({ title, subtitle, image, links, platforms }) => {
 const ReleasesCarousel = ({ releases }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = React.useState(true);
+  const [touchStart, setTouchStart] = React.useState(null);
+  const [touchEnd, setTouchEnd] = React.useState(null);
+  const [isUserInteracting, setIsUserInteracting] = React.useState(false);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
 
   React.useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || isUserInteracting) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % releases.length);
     }, 1500);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, releases.length]);
+  }, [isAutoPlaying, releases.length, isUserInteracting]);
+
+  // Resume auto-play after user stops interacting (mobile only)
+  React.useEffect(() => {
+    if (!isUserInteracting) return;
+
+    const timeout = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 3000); // Resume after 3 seconds of no interaction
+
+    return () => clearTimeout(timeout);
+  }, [isUserInteracting, currentIndex]);
+
+  const onTouchStart = (e) => {
+    setIsUserInteracting(true);
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      // Swipe left - go to next
+      setCurrentIndex((prev) => (prev + 1) % releases.length);
+    }
+    if (isRightSwipe) {
+      // Swipe right - go to previous
+      setCurrentIndex((prev) => (prev - 1 + releases.length) % releases.length);
+    }
+  };
 
   const getCardStyle = (index) => {
     const diff = (index - currentIndex + releases.length) % releases.length;
 
     if (diff === 0) {
-      // Center card
       return {
         transform: 'translateX(0%) scale(1.1)',
         zIndex: 30,
         opacity: 1,
       };
     } else if (diff === 1 || diff === -releases.length + 1) {
-      // Right card
       return {
         transform: 'translateX(80%) scale(0.85)',
         zIndex: 20,
         opacity: 0.6,
       };
     } else if (diff === releases.length - 1 || diff === -1) {
-      // Left card
       return {
         transform: 'translateX(-80%) scale(0.85)',
         zIndex: 20,
         opacity: 0.6,
       };
     } else {
-      // Hidden cards
       return {
         transform: 'translateX(0%) scale(0.7)',
         zIndex: 10,
@@ -120,9 +160,12 @@ const ReleasesCarousel = ({ releases }) => {
 
   return (
     <div
-      className="relative w-full h-[300px] flex items-center justify-center"
+      className="relative w-full h-[300px] flex items-center justify-center select-none"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       {releases.map((release, index) => (
         <div
@@ -140,9 +183,13 @@ const ReleasesCarousel = ({ releases }) => {
         {releases.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all ${index === currentIndex ? 'bg-red-500 w-6' : 'bg-gray-600'
-              }`}
+            onClick={() => {
+              setIsUserInteracting(true);
+              setCurrentIndex(index);
+            }}
+            className={`w-2 h-2 rounded-full transition-all ${
+              index === currentIndex ? 'bg-red-500 w-6' : 'bg-gray-600'
+            }`}
           />
         ))}
       </div>
