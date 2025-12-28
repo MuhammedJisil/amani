@@ -212,6 +212,9 @@ const ScrollExpandMedia = ({
       ref={sectionRef}
       id={sectionId}
       className='transition-colors duration-700 ease-in-out overflow-x-hidden w-full relative'
+      style={{
+        touchAction: mediaFullyExpanded ? 'auto' : 'none'
+      }}
     >
       <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
         <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
