@@ -54,22 +54,9 @@ const ScrollExpandMedia = ({
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Reset animation when navigating back to top (for menu navigation)
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY === 0 && mediaFullyExpandedRef.current && !isUserInteractingRef.current) {
-        setScrollProgress(0);
-        setMediaFullyExpanded(false);
-        setShowContent(false);
-        // Refs update via their useEffects or we can update immediately to be safe for next event tick
-        scrollProgressRef.current = 0;
-        mediaFullyExpandedRef.current = false;
-      }
-    };
+  // Removed the auto-reset useEffect that was causing the loop.
+  // We now rely on explicit user interaction (pulling down) to collapse the media.
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Removed deps to avoid re-binding
 
   // Check if section is in view
   useEffect(() => {
