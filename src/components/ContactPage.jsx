@@ -47,7 +47,7 @@ export default function ContactPage() {
     const body = encodeURIComponent(
       `Name: ${formData.name}\nMobile: ${formData.mobile}\n\nShow Details:\n${formData.details}`
     );
-    window.location.href = `mailto:amanikltrn@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:amaniklten@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const handleLogoClick = () => {
@@ -110,7 +110,7 @@ export default function ContactPage() {
               className="flex items-center gap-2 text-gray-300 hover:text-red-500 transition-colors group"
             >
               <Mail className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
-              <span className="text-base">amanikltrn@gmail.com</span>
+              <span className="text-base">amaniklten@gmail.com</span>
             </a>
           </motion.div>
 
