@@ -23,11 +23,25 @@ const ScrollExpandMedia = ({
 
   const sectionRef = useRef(null);
 
+  // Refs for event handling to avoid closure staleness and re-binding listeners
+  const scrollProgressRef = useRef(0);
+  const mediaFullyExpandedRef = useRef(false);
+  const touchStartYRef = useRef(0);
+  const isUserInteractingRef = useRef(false);
+  const isInViewRef = useRef(true);
+
+  // Sync refs with state
   useEffect(() => {
-    setScrollProgress(0);
-    setShowContent(false);
-    setMediaFullyExpanded(false);
-  }, [mediaType]);
+    scrollProgressRef.current = scrollProgress;
+  }, [scrollProgress]);
+
+  useEffect(() => {
+    mediaFullyExpandedRef.current = mediaFullyExpanded;
+  }, [mediaFullyExpanded]);
+
+  useEffect(() => {
+    isUserInteractingRef.current = isUserInteracting;
+  }, [isUserInteracting]);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -43,16 +57,19 @@ const ScrollExpandMedia = ({
   // Reset animation when navigating back to top (for menu navigation)
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY === 0 && mediaFullyExpanded && !isUserInteracting) {
+      if (window.scrollY === 0 && mediaFullyExpandedRef.current && !isUserInteractingRef.current) {
         setScrollProgress(0);
         setMediaFullyExpanded(false);
         setShowContent(false);
+        // Refs update via their useEffects or we can update immediately to be safe for next event tick
+        scrollProgressRef.current = 0;
+        mediaFullyExpandedRef.current = false;
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [mediaFullyExpanded, isUserInteracting]);
+  }, []); // Removed deps to avoid re-binding
 
   // Check if section is in view
   useEffect(() => {
@@ -61,6 +78,7 @@ const ScrollExpandMedia = ({
         const rect = sectionRef.current.getBoundingClientRect();
         const inView = rect.top < window.innerHeight && rect.bottom > 0;
         setIsInView(inView);
+        isInViewRef.current = inView;
       }
     };
 
@@ -73,83 +91,112 @@ const ScrollExpandMedia = ({
   useEffect(() => {
     const handleWheel = (e) => {
       // Only handle wheel events if section is in view and at the very top of the page
-      if (!isInView || window.scrollY > 2) return;
+      if (!isInViewRef.current || window.scrollY > 2) return;
 
       setIsUserInteracting(true);
+      isUserInteractingRef.current = true;
 
-      if (mediaFullyExpanded && e.deltaY < 0) {
+      const expanded = mediaFullyExpandedRef.current;
+      const progress = scrollProgressRef.current;
+
+      if (expanded && e.deltaY < 0) {
         setMediaFullyExpanded(false);
+        mediaFullyExpandedRef.current = false;
         e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      } else if (!expanded) {
         e.preventDefault();
         // CHANGED: Reduced from 0.0009 to 0.0004 for slower scroll speed
         const scrollDelta = e.deltaY * 0.0004;
         const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
+          Math.max(progress + scrollDelta, 0),
           1
         );
+
         setScrollProgress(newProgress);
+        // Update ref immediately for next event
+        scrollProgressRef.current = newProgress;
 
         if (newProgress >= 1) {
           setMediaFullyExpanded(true);
           setShowContent(true);
+          mediaFullyExpandedRef.current = true;
         } else if (newProgress < 0.75) {
           setShowContent(false);
         }
       }
 
-      setTimeout(() => setIsUserInteracting(false), 100);
+      setTimeout(() => {
+        setIsUserInteracting(false);
+        isUserInteractingRef.current = false;
+      }, 100);
     };
 
     const handleTouchStart = (e) => {
-      if (!isInView || window.scrollY > 2) return;
+      if (!isInViewRef.current || window.scrollY > 2) return;
       setTouchStartY(e.touches[0].clientY);
+      touchStartYRef.current = e.touches[0].clientY;
       setIsUserInteracting(true);
+      isUserInteractingRef.current = true;
     };
 
     const handleTouchMove = (e) => {
-      if (!isInView || !touchStartY || window.scrollY > 2) return;
+      if (!isInViewRef.current || !touchStartYRef.current || window.scrollY > 2) return;
 
       const touchY = e.touches[0].clientY;
-      const deltaY = touchStartY - touchY;
+      const startY = touchStartYRef.current;
+      const deltaY = startY - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20) {
+      const expanded = mediaFullyExpandedRef.current;
+      const progress = scrollProgressRef.current;
+
+      if (expanded && deltaY < -20) {
         setMediaFullyExpanded(false);
+        mediaFullyExpandedRef.current = false;
         e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      } else if (!expanded) {
         e.preventDefault();
-        // CHANGED: Reduced touch scroll speed for smoother experience
-        const scrollFactor = deltaY < 0 ? 0.008 : 0.006;
+
+        // Slightly increased sensitivity for mobile (0.006 -> 0.008/0.007)
+        const scrollFactor = deltaY < 0 ? 0.008 : 0.007;
         const scrollDelta = deltaY * scrollFactor;
         const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
+          Math.max(progress + scrollDelta, 0),
           1
         );
+
         setScrollProgress(newProgress);
+        scrollProgressRef.current = newProgress;
 
         if (newProgress >= 1) {
           setMediaFullyExpanded(true);
           setShowContent(true);
+          mediaFullyExpandedRef.current = true;
         } else if (newProgress < 0.75) {
           setShowContent(false);
         }
 
         setTouchStartY(touchY);
+        touchStartYRef.current = touchY;
       }
     };
 
     const handleTouchEnd = () => {
       setTouchStartY(0);
-      setTimeout(() => setIsUserInteracting(false), 100);
+      touchStartYRef.current = 0;
+      setTimeout(() => {
+        setIsUserInteracting(false);
+        isUserInteractingRef.current = false;
+      }, 100);
     };
 
     const handleScroll = () => {
       // Only lock scroll if actively interacting, not fully expanded, in view, and at top
-      if (isUserInteracting && !mediaFullyExpanded && isInView && window.scrollY < 2) {
+      if (isUserInteractingRef.current && !mediaFullyExpandedRef.current && isInViewRef.current && window.scrollY < 2) {
         window.scrollTo(0, 0);
       }
     };
 
+    // Add listeners with non-passive flag for preventDefault
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
@@ -163,7 +210,7 @@ const ScrollExpandMedia = ({
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [scrollProgress, mediaFullyExpanded, touchStartY, isInView, isUserInteracting]);
+  }, []); // Empty dependency array ensures listeners are only attached once
 
   const mediaWidth = 300 + scrollProgress * (isMobileState ? 650 : 1250);
   const mediaHeight = 400 + scrollProgress * (isMobileState ? 200 : 400);

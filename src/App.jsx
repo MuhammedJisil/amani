@@ -261,7 +261,7 @@ function App() {
             mediaType="image"
             mediaSrc="/hero-image.jpg"
             bgImageSrc="/hero-image0.jpg"
-            title="Let's Go"
+            title="AMANI KL10"
 
             textBlend={false}
             sectionId="home"
