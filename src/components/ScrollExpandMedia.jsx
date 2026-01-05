@@ -35,8 +35,9 @@ const ScrollExpandMedia = ({
 
   // Animation Transforms
   // Map scroll progress (0 to 1) to animation values
-  // We expand fully by 80% of the scroll container to leave a little buffer at the end
-  const expandRange = [0, 0.8];
+  // Map scroll progress (0 to 1) to animation values
+  // We expand fully by 95% of the scroll container to minimize the pause at the end
+  const expandRange = [0, 0.95];
 
   const widthBase = 300;
   const widthExpanded = isMobileState ? 950 : 1550; // Approximations based on previous logic
@@ -65,7 +66,7 @@ const ScrollExpandMedia = ({
       ref={containerRef}
       id={sectionId}
       className='relative w-full'
-      style={{ height: isMobileState ? '200vh' : '350vh' }} // Mobile: faster (200vh), Desktop: slower/smoother (350vh)
+      style={{ height: isMobileState ? '200vh' : '250vh' }} // Mobile: faster (200vh), Desktop: snappier (250vh)
     >
       {/* Sticky Inner Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
@@ -96,6 +97,7 @@ const ScrollExpandMedia = ({
               maxWidth: '95vw',
               maxHeight: '85vh',
               boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.3)',
+              willChange: 'width, height' // Performance hint
             }}
           >
             {mediaType === 'video' ? (
