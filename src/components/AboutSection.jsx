@@ -14,7 +14,7 @@ const TextRevealByWord = ({ text, className = "" }) => {
   return (
     <div ref={targetRef} className={`relative z-0 h-[80vh] ${className}`}>
       <div className="sticky top-0 mx-auto flex h-[80vh] max-w-4xl items-center bg-transparent px-[1rem] py-[3rem]">
-        <p className="flex flex-wrap p-5 text-lg font-bold text-white/20 md:p-8 md:text-xl lg:p-10 lg:text-2xl xl:text-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <p className="flex flex-wrap p-5 text-lg font-bold text-white/20 md:p-8 md:text-xl lg:p-10 lg:text-2xl xl:text-3xl" style={{ fontFamily: "'Montserrat', sans-serif" }}>
           {words.map((word, i) => {
             const start = i / words.length;
             const end = start + 1 / words.length;

@@ -72,7 +72,7 @@ const StyledWrapper = styled.div`
     z-index: 2;
     -webkit-tap-highlight-color: transparent;
     white-space: nowrap;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
   }
   
   .label span {
@@ -183,78 +183,78 @@ const BottomNav = ({ activeSection, onNavigate }) => {
       <div>
         <div className="container">
           <div className="wrap">
-            <input 
-              checked={activeSection === 'home'} 
-              type="radio" 
-              id="rd-1" 
-              name="radio" 
-              className="rd-1" 
-              hidden 
+            <input
+              checked={activeSection === 'home'}
+              type="radio"
+              id="rd-1"
+              name="radio"
+              className="rd-1"
+              hidden
               readOnly
             />
-            <label 
-              htmlFor="rd-1" 
-              className="label" 
-              style={{zIndex: 4}}
+            <label
+              htmlFor="rd-1"
+              className="label"
+              style={{ zIndex: 4 }}
               onClick={(e) => handleClick(e, 'home')}
             >
               <span>Home</span>
             </label>
-            
-            <input 
-              checked={activeSection === 'about'} 
-              type="radio" 
-              id="rd-2" 
-              name="radio" 
-              className="rd-2" 
-              hidden 
+
+            <input
+              checked={activeSection === 'about'}
+              type="radio"
+              id="rd-2"
+              name="radio"
+              className="rd-2"
+              hidden
               readOnly
             />
-            <label 
-              htmlFor="rd-2" 
-              className="label" 
-              style={{zIndex: 5}}
+            <label
+              htmlFor="rd-2"
+              className="label"
+              style={{ zIndex: 5 }}
               onClick={(e) => handleClick(e, 'about')}
             >
               <span>About Me</span>
             </label>
-            
-            <input 
-              checked={activeSection === 'releases'} 
-              type="radio" 
-              id="rd-3" 
-              name="radio" 
-              className="rd-3" 
-              hidden 
+
+            <input
+              checked={activeSection === 'releases'}
+              type="radio"
+              id="rd-3"
+              name="radio"
+              className="rd-3"
+              hidden
               readOnly
             />
-            <label 
-              htmlFor="rd-3" 
-              className="label" 
-              style={{zIndex: 2}}
+            <label
+              htmlFor="rd-3"
+              className="label"
+              style={{ zIndex: 2 }}
               onClick={(e) => handleClick(e, 'releases')}
             >
               <span>Releases</span>
             </label>
-            
-            <input 
-              checked={activeSection === 'contact'} 
-              type="radio" 
-              id="rd-4" 
-              name="radio" 
-              className="rd-4" 
-              hidden 
+
+            <input
+              checked={activeSection === 'contact'}
+              type="radio"
+              id="rd-4"
+              name="radio"
+              className="rd-4"
+              hidden
               readOnly
             />
-            <label 
-              htmlFor="rd-4" 
-              className="label" 
-              style={{zIndex: 3}}
+            <label
+              htmlFor="rd-4"
+              className="label"
+              style={{ zIndex: 3 }}
               onClick={(e) => handleClick(e, 'contact')}
             >
               <span>Contact</span>
             </label>
-            
+
             <div className="bar" />
             <div className="slidebar" />
           </div>

@@ -43,7 +43,7 @@ const ReleaseCard = ({ title, subtitle, image, links, platforms }) => {
           <h3 className="text-3xl font-bold text-white mb-1" style={{ fontFamily: "'Anton', sans-serif" }}>
             {title}
           </h3>
-          <p className="text-gray-400 text-sm mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <p className="text-gray-400 text-sm mb-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             {subtitle}
           </p>
 
@@ -343,7 +343,7 @@ const ReleasesSection = React.forwardRef((props, ref) => {
           <h2 className="text-5xl font-bold text-red-500 mb-4" style={{ fontFamily: "'Anton', sans-serif" }}>
             Releases
           </h2>
-          <p className="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <p className="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto" style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Check out my latest releases and projects. Stream now on all major platforms.
           </p>
         </div>

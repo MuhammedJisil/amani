@@ -167,7 +167,7 @@ const ScrollExpandMedia = ({
                   className='text-2xl text-blue-200 mb-2'
                   style={{
                     x: textLeftX,
-                    fontFamily: "'Playfair Display', serif"
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
                   {date}
@@ -178,7 +178,7 @@ const ScrollExpandMedia = ({
                   className='text-blue-200 font-medium text-center'
                   style={{
                     x: textRightX,
-                    fontFamily: "'Playfair Display', serif"
+                    fontFamily: "'Montserrat', sans-serif"
                   }}
                 >
                   {scrollToExpand}

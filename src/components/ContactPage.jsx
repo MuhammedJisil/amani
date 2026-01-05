@@ -82,7 +82,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true, amount: 0.3 }}
             className="text-lg text-gray-400 text-center mb-6 max-w-xl mx-auto"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             Ready to bring the energy to your event? Contact us or book a show today.
           </motion.p>
@@ -94,7 +94,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.3 }}
             viewport={{ once: true, amount: 0.3 }}
             className="flex flex-wrap items-center justify-center gap-6 mb-8"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             <a
               href="tel:+918157853443"
@@ -132,12 +132,12 @@ export default function ContactPage() {
                 <h3 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: "'Anton', sans-serif" }}>
                   Book a Show
                 </h3>
-                <p className="text-gray-300 text-sm" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <p className="text-gray-300 text-sm" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   Fill out the form to request a booking
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <form onSubmit={handleSubmit} className="space-y-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -209,7 +209,7 @@ export default function ContactPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-red-900 to-red-600 hover:from-red-800 hover:to-red-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 border border-red-500/30 shadow-lg shadow-red-900/20 flex items-center justify-center gap-2"
                   style={{ fontFamily: "'Anton', sans-serif" }}
                 >
                   <Send className="w-4 h-4" />
@@ -224,12 +224,12 @@ export default function ContactPage() {
       {/* Footer */}
       <footer className="relative bg-transparent border-t border-red-900/10 py-6 z-10">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <div className="text-gray-400 text-sm text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <div className="text-gray-400 text-xs text-center md:text-left">
               © Copyright AMANI KL10 {new Date().getFullYear()} All rights reserved.
             </div>
 
-            <div className="flex items-center justify-center md:justify-end gap-2 text-gray-400 text-sm w-full md:w-auto">
+            <div className="flex items-center justify-center md:justify-end gap-2 text-gray-400 text-xs w-full md:w-auto">
               <span>Powered by</span>
               <img
                 src="/SynByte.png"
