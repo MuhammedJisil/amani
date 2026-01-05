@@ -71,7 +71,7 @@ const AboutSection = () => {
       <ZoomParallax images={images} />
 
       {/* Content section with smooth transition */}
-      <div className="relative z-10 -mt-[100vh] pb-32">
+      <div className="relative z-10 -mt-[50vh] md:-mt-[100vh] pb-32">
         <div className="container mx-auto px-4">
           {/* Text with Animation */}
           <div className="max-w-4xl mx-auto">
